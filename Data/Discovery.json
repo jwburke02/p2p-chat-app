@@ -1,0 +1,42 @@
+[
+    {
+        "HOST": "127.0.0.1",
+        "PORT": 65452,
+        "USER": "John"
+    },
+    {
+        "HOST": "127.0.1.1",
+        "PORT": 65451,
+        "USER": "Usman"
+    },
+    {
+        "HOST": "127.1.1.1",
+        "PORT": 56184,
+        "USER": "Osama"
+    },
+    {
+        "HOST": "127.0.12.1",
+        "PORT": 51931,
+        "USER": "Jason"
+    },
+    {
+        "HOST": "127.0.12.3",
+        "PORT": 38491,
+        "USER": "Paula"
+    },
+    {
+        "HOST": "127.0.5.1",
+        "PORT": 58937,
+        "USER": "Brianna"
+    },
+    {
+        "HOST": "127.0.0.1",
+        "PORT": 61033,
+        "USER": "Geoffrey"
+    },
+    {
+        "HOST": "127.0.0.1",
+        "PORT": 61408,
+        "USER": "Ryan"
+    }
+]
