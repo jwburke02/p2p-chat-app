@@ -1,11 +1,12 @@
 import socket
 from threading import Thread
 import Discovery
+import Database
+import Utils
 
 def messageListening():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(('', 0))
-        print(f"Listening for messages on port: {s.getsockname()[1]}")
         Discovery.updatePort(s.getsockname()[1])
         s.listen()
         while True:
@@ -15,15 +16,24 @@ def messageListening():
                     data = conn.recv(1024)
                     if not data:
                         break
-                    print(f"Received message: {data.decode()}")
+                    received_message = data.decode()
+                    user = Utils.getUserFromAddress(addr)
+                    if Database.hostExistsInCollection(addr[0], user):
+                        Database.addMessageToHostDoc(addr[0], user, received_message, False)
+                    else:
+                        Database.createHostDoc(addr[0], user, received_message, True)
 
 def createListener():
     listener = Thread(target=messageListening)
     listener.daemon = True
     listener.start()
 
-def sendMessage(HOST, PORT, MESSAGE):
+def sendMessage(HOST, PORT, MESSAGE, USER):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
         s.sendall(MESSAGE.encode())
+        if Database.hostExistsInCollection(HOST, USER):
+            Database.addMessageToHostDoc(HOST, USER, MESSAGE, True)
+        else:
+            Database.createHostDoc(HOST, USER, MESSAGE, True)
         

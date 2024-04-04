@@ -10,6 +10,11 @@ TTL = 30 # TTL constant
 parser = reqparse.RequestParser()
 parser.add_argument('HOST', help="HOST cannot be blank.")
 parser.add_argument('PORT', help="PORT cannot be blank.")
+parser.add_argument('USER', help="PORT cannot be blank.")
+
+def promptUsers(listof):
+    for iter, user in enumerate(listof):
+        print(f"{iter} - {user['USER']} ({user['HOST']})")
 
 # Function to remove expired entries from the input list
 def remove_expired_entries(data):
@@ -23,6 +28,7 @@ class DiscoveryAPI(Resource):
             args = parser.parse_args()
             host = args['HOST']
             port = args['PORT']
+            username = args['USER']
             # If already inside of the list, update the TTL and return the list
             for user in active_users:
                 if user['HOST'] == host and user['PORT'] == port:
@@ -33,6 +39,7 @@ class DiscoveryAPI(Resource):
             new_user = {
                 'HOST': host,
                 'PORT': port,
+                'USER': username,
                 'timestamp': time.time()
             }
             active_users.append(new_user)

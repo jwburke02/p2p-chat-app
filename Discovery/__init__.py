@@ -9,11 +9,20 @@ DISCOVERY_URL = "http://localhost:7777/"
 # gets updated prior to discoveryListener execution
 HOST = Utils.getIP()
 PORT = -1
+USER = ""
 DISCOVERY = []
+
+def promptUsers():
+    for iter, user in enumerate(DISCOVERY):
+        print(f"{iter} - {user['USER']} ({user['HOST']})")
 
 def updatePort(port):
     global PORT
     PORT = port
+
+def updateUser(user):
+    global USER 
+    USER = user
 
 '''
 This call is made every ~20 seconds to the server to update discoveries list
@@ -22,7 +31,8 @@ def discoveryListener():
     while True:
         params = {
             'HOST': HOST,
-            'PORT': PORT
+            'PORT': PORT,
+            'USER': USER
         }
         response = requests.put(DISCOVERY_URL, json=params)
         global DISCOVERY
