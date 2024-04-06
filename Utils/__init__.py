@@ -17,6 +17,6 @@ def getIP():
 def getUserFromAddress(addr):
     from Discovery import DISCOVERY
     for item in DISCOVERY:
-        if item["HOST"] == addr[0] and item["PORT"] == addr[1]:
+        if item["HOST"] == addr[0]:
             return item["USER"]
     return None  # Return None if no matching object found
