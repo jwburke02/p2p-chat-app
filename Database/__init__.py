@@ -21,7 +21,6 @@ MESSAGES_COLLECTION = DB['message']
 # OBJECT CREATION
 #############
 def createHostDoc(host, user, message, sent):
-    print("CREATING DOC")
     current_time_seconds = datetime.datetime.now().timestamp()
     message_obj = {
         "message": message,
@@ -46,7 +45,6 @@ def createHostDoc(host, user, message, sent):
 # MESSAGE SENDING
 #############
 def addMessageToHostDoc(host, user, message, sent):
-    print("ADDING TO DOC")
     current_time_seconds = datetime.datetime.now().timestamp()
     message_obj = {
         "message": message,
@@ -72,3 +70,16 @@ def hostExistsInCollection(host, user):
         return True
     else:
         return False
+    
+#############
+# CONNECTIONS RETRIEVAL
+#############
+def retrieveConnectionsList():
+    results = MESSAGES_COLLECTION.find({})
+    list = []
+    for doc in results:
+        list.append(doc)
+    if (results):
+        return list
+    else:
+        return None
