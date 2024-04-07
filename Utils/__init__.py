@@ -3,11 +3,13 @@ import socket
 # this function i use to get ip and forward to user discovery server
 def getIP():
     try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
         # Get the local IP address
-        local_ip = socket.gethostbyname(socket.gethostname())
-
+        local_ip = s.getsockname()[0]
         # Check if the IP address matches the desired format "10.x.x.x"
-        if local_ip.startswith('10.'):
+        print(local_ip)
+        if local_ip.startswith('10.') or local_ip.startswith('127.0.0.1'):
             return local_ip
         else:
             raise ValueError("IP address does not match the desired format.")
