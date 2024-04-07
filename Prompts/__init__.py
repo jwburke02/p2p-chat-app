@@ -1,3 +1,5 @@
+import Database
+
 def promptUser():
     print("--------------------------------------")
     print("AVAILABLE OPTIONS:")
@@ -15,6 +17,7 @@ def promptRead(connected_users):
     print("--------------------------------------")
     print("MESSAGE HISTORY:")
     print("--------------------------------------")
+    print("0 - Cancel")
     for iter, user in enumerate(connected_users):
         print(f"{iter + 1} - {user['USER']} ({user['HOST']})")
     print("--------------------------------------")
@@ -41,10 +44,13 @@ def promptWrite(discovery):
     print("--------------------------------------")
     print("ONLINE RECIPIENTS:")
     print("--------------------------------------")
+    print("0 - Cancel")
     for iter, user in enumerate(discovery):
         print(f"{iter + 1} - {user['USER']} ({user['HOST']})")
     print("--------------------------------------")
     result = int(input("Make a selection: "))
+    if result == 0:
+        return [-1, ""]
     message = input("Write a message: ")
     print("\n")
     return [result - 1, message]
@@ -53,8 +59,12 @@ def promptBlock(discovery):
     print("--------------------------------------")
     print("POSSIBLE USERS TO BLOCK:")
     print("--------------------------------------")
+    print("0 - Cancel")
     for iter, user in enumerate(discovery):
-        print(f"{iter + 1} - {user['USER']} ({user['HOST']})")
+        if Database.isHostBlocked(user['HOST']):
+            print(f"{iter + 1} - {user['USER']} ({user['HOST']}) [BLOCKED]")
+        else:
+            print(f"{iter + 1} - {user['USER']} ({user['HOST']})")
     print("--------------------------------------")
     result = int(input("Make a selection to toggle Block/Unblock: "))
     print("\n")

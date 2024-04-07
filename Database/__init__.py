@@ -78,8 +78,53 @@ def retrieveConnectionsList():
     results = MESSAGES_COLLECTION.find({})
     list = []
     for doc in results:
-        list.append(doc)
+        if not doc['IS_BLOCKED']:
+            list.append(doc)
     if (results):
         return list
     else:
         return None
+    
+#############
+# TOGGLE USER BLOCK
+#############
+def toggleBlock(host):
+    # this will toggle block for every host, so a host can either be fully blocked or not fully blocked
+    orig = MESSAGES_COLLECTION.find_one({"HOST": host})
+    to_set = not orig['IS_BLOCKED']
+    result = MESSAGES_COLLECTION.update_many(
+        {"HOST": host},
+        {"$set": {"IS_BLOCKED": to_set}}
+    )
+    if (result):
+        return True
+    else:
+        return False
+#############
+# CHECK IF BLOCKED
+#############
+def isHostBlocked(host):
+    result = MESSAGES_COLLECTION.find_one({"HOST": host})['IS_BLOCKED']
+    return result
+
+#############
+# TOGGLE USER MUTE
+#############
+def toggleMute(host):
+    # this will toggle block for every host, so a host can either be fully blocked or not fully blocked
+    orig = MESSAGES_COLLECTION.find_one({"HOST": host})
+    to_set = not orig['IS_MUTED']
+    result = MESSAGES_COLLECTION.update_many(
+        {"HOST": host},
+        {"$set": {"IS_MUTED": to_set}}
+    )
+    if (result):
+        return True
+    else:
+        return False
+#############
+# CHECK IF MUTED
+#############
+def isHostMuted(host):
+    result = MESSAGES_COLLECTION.find_one({"HOST": host})['IS_MUTED']
+    return result

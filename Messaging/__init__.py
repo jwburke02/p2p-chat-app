@@ -18,10 +18,11 @@ def messageListening():
                         break
                     received_message = data.decode()
                     user = Utils.getUserFromAddress(addr)
-                    if Database.hostExistsInCollection(addr[0], user):
-                        Database.addMessageToHostDoc(addr[0], user, received_message, False)
-                    else:
-                        Database.createHostDoc(addr[0], user, received_message, False)
+                    if not Database.isHostBlocked(addr[0]):
+                        if Database.hostExistsInCollection(addr[0], user):
+                            Database.addMessageToHostDoc(addr[0], user, received_message, False)
+                        else:
+                            Database.createHostDoc(addr[0], user, received_message, False)
 
 def createListener():
     listener = Thread(target=messageListening)
