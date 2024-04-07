@@ -36,7 +36,7 @@ def printMessages(messages, user):
         text = message['message']
         was_sent = message['sent']
         if was_sent:
-            print(f"{iter + 1} - From {Discovery.USER}: {text}")
+            print(f"{iter + 1} - From you: {text}")
         else:
             print(f"{iter + 1} - From {user}: {text}")
     print("--------------------------------------")

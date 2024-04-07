@@ -21,7 +21,7 @@ def messageListening():
                     if Database.hostExistsInCollection(addr[0], user):
                         Database.addMessageToHostDoc(addr[0], user, received_message, False)
                     else:
-                        Database.createHostDoc(addr[0], user, received_message, True)
+                        Database.createHostDoc(addr[0], user, received_message, False)
 
 def createListener():
     listener = Thread(target=messageListening)

@@ -17,8 +17,16 @@ def getIP():
         print(f"An error occurred: {e}")
 
 def getUserFromAddress(addr):
-    from Discovery import DISCOVERY
-    for item in DISCOVERY:
+    import Discovery
+    import requests
+    params = {
+        'HOST': Discovery.HOST,
+        'PORT': Discovery.PORT,
+        'USER': Discovery.USER
+    }
+    response = requests.put(Discovery.DISCOVERY_URL, json=params)
+    discovery = response.json()
+    for item in discovery:
         if item["HOST"] == addr[0]:
             return item["USER"]
     return None  # Return None if no matching object found
