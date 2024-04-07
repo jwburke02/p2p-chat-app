@@ -3,57 +3,7 @@ import Discovery
 import time
 import Database
 import requests
-
-def promptUser():
-    print("--------------------------------------")
-    print("AVAILABLE OPTIONS:")
-    print("--------------------------------------")
-    print("1 - Read Messages from a user")
-    print("2 - Send Messages to a user")
-    print("3 - Logout")
-    print("4 - Mute or Block a user")
-    print("--------------------------------------")
-    result = int(input("Make a selection: "))
-    print("\n")
-    return result
-
-def promptRead(connected_users):
-    print("--------------------------------------")
-    print("MESSAGE HISTORY:")
-    print("--------------------------------------")
-    for iter, user in enumerate(connected_users):
-        print(f"{iter + 1} - {user['USER']} ({user['HOST']})")
-    print("--------------------------------------")
-    result = int(input("Make a selection: "))
-    print("\n")
-    return result - 1
-
-def printMessages(messages, user):
-    print("--------------------------------------")
-    print(f"MESSAGE HISTORY WITH {user}:")
-    print("--------------------------------------")
-    for iter, message in enumerate(messages):
-        text = message['message']
-        was_sent = message['sent']
-        if was_sent:
-            print(f"{iter + 1} - From you: {text}")
-        else:
-            print(f"{iter + 1} - From {user}: {text}")
-    print("--------------------------------------")
-    print("\n")
-    return
-
-def promptWrite(discovery):
-    print("--------------------------------------")
-    print("ONLINE RECIPIENTS:")
-    print("--------------------------------------")
-    for iter, user in enumerate(discovery):
-        print(f"{iter + 1} - {user['USER']} ({user['HOST']})")
-    print("--------------------------------------")
-    result = int(input("Make a selection: "))
-    message = input("Write a message: ")
-    print("\n")
-    return [result - 1, message]
+from Prompts import *
 
 if __name__ == "__main__":
     # Progress Loop
@@ -88,15 +38,45 @@ if __name__ == "__main__":
                     }
                     response = requests.put(Discovery.DISCOVERY_URL, json=params)
                     discovery = response.json()
+                    mod = True
+                    while mod:
+                        mod = False
+                        for item in discovery:
+                            print(item)
+                            print(Discovery.HOST)
+                            if item['HOST'] == Discovery.HOST:
+                                mod = True
+                                discovery.remove(item)
                     [user_selection, message] = promptWrite(discovery)
                     Messaging.sendMessage(discovery[user_selection]['HOST'], int(discovery[user_selection]['PORT']), message, discovery[user_selection]['USER'])
                 except:
-                    print(f"There was an error attempting to send a message to that HOST and PORT: {Discovery.DISCOVERY[user_selection]['HOST']},{Discovery.DISCOVERY[user_selection]['HOST']}")
+                    print(f"There was an error attempting to send a message to that HOST and PORT: {Discovery.DISCOVERY[user_selection]['HOST']},{Discovery.DISCOVERY[user_selection]['PORT']}")
             if selection == 3:
                 # End program, this will cut
+                print('\n')
+                print('LOGGING OUT...')
+                print('\n')
                 quit()
             if selection == 4:
-                # Prompt user for select from users list
-                Discovery.promptUsers()
-                user_selection = input("Select a user: ")
-                # Then block or mute
+                try:
+                    # quickly get updated discovery list 
+                    params = {
+                        'HOST': Discovery.HOST,
+                        'PORT': Discovery.PORT,
+                        'USER': Discovery.USER
+                    }
+                    response = requests.put(Discovery.DISCOVERY_URL, json=params)
+                    discovery = response.json()
+                    mod = True
+                    while mod:
+                        mod = False
+                        for item in discovery:
+                            print(item)
+                            print(Discovery.HOST)
+                            if item['HOST'] == Discovery.HOST:
+                                mod = True
+                                discovery.remove(item)
+                    user_selection = promptBlock(discovery)
+                    Messaging.sendMessage(discovery[user_selection]['HOST'], int(discovery[user_selection]['PORT']))
+                except:
+                    print(f"There was an error attempting to block that HOST and PORT: {Discovery.DISCOVERY[user_selection]['HOST']},{Discovery.DISCOVERY[user_selection]['PORT']}")
