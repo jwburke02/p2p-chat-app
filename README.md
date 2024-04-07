@@ -19,7 +19,5 @@ This is a messaging application for two machines on the same local network. It w
   - Returns: List of {HOST, PORT, USER}
   - This endpoint serves to keep a state of active users available at this server for any ChatApplication instances to reconcile the discovery list at any time.
 - Note that this server's URL must be HARDCODED into each instance of ChatApplication.py, and only one machine should be running this DiscoveryServer.py
-### Installation
-JovQueue can be installed via pip: 'pip install JovQueue'
-### Example
-A (very simple) example of using JovQueue can be found in the Examples directory of the JovQueue repo
+### Installation and Use
+This application requires two machines on the same Wifi network to run. One machine must run both the DiscoveryServer and ChatApplication, with the DISCOVERY_URL in the Discovery module hardcoded. It should be localhost for the machine running DiscoveryServer. It should be some local address for the machine not running DiscoveryServer. Besides this URL configuration there is no additional setup, the system works entirely on the command line, and Discovery is handled automatically by the server. The messaging itself is still entirely peer-to-peer.
