@@ -42,8 +42,6 @@ if __name__ == "__main__":
                     while mod:
                         mod = False
                         for item in discovery:
-                            print(item)
-                            print(Discovery.HOST)
                             if item['HOST'] == Discovery.HOST:
                                 mod = True
                                 discovery.remove(item)
@@ -71,8 +69,6 @@ if __name__ == "__main__":
                     while mod:
                         mod = False
                         for item in discovery:
-                            print(item)
-                            print(Discovery.HOST)
                             if item['HOST'] == Discovery.HOST:
                                 mod = True
                                 discovery.remove(item)
